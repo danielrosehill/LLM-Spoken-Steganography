@@ -1,0 +1,24 @@
+{
+  "name": "llm-spoken-steganography",
+  "version": "1.0.0",
+  "main": "src/pipeline.js",
+  "directories": {
+    "doc": "docs",
+    "example": "examples",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "node --test test/"
+  },
+  "license": "MIT",
+  "description": "Keyed spoken acrostic: an LLM hides an encrypted message in the sentence openers of a mundane podcast script that survives TTS and STT.",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.135.0",
+    "@noble/ciphers": "^2.4.0",
+    "@noble/hashes": "^2.4.0"
+  },
+  "type": "module",
+  "bin": {
+    "stegocast": "cli/stegocast.mjs"
+  }
+}

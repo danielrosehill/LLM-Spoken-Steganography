@@ -1,0 +1,201 @@
+{
+  "model": "claude-haiku-5-5",
+  "letters": "AACDACWFGFHHADICNOCWOWWPCNSTBDPLOSPLMGSCC",
+  "title": "Allotment Garden Reopens Its Gates",
+  "sentences": [
+    {
+      "speaker": "Maya",
+      "text": "Anyone who has walked past Larch Street lately has noticed the gates are open again."
+    },
+    {
+      "speaker": "Owen",
+      "text": "Absolutely, the allotment society reopened the site on Saturday after a long winter closure."
+    },
+    {
+      "speaker": "Maya",
+      "text": "Crowds turned up with spades, seed trays and a surprising number of thermoses."
+    },
+    {
+      "speaker": "Owen",
+      "text": "Deborah Hale, who has run plot nine for years, said the soil was still cold."
+    },
+    {
+      "speaker": "Maya",
+      "text": "Apparently the shared water tank had frozen solid over January, so volunteers spent the morning thawing it."
+    },
+    {
+      "speaker": "Owen",
+      "text": "Coffee and biscuits were on offer in the old shed."
+    },
+    {
+      "speaker": "Maya",
+      "text": "Well, the society is asking newcomers to sign up for a plot before the end of March."
+    },
+    {
+      "speaker": "Owen",
+      "text": "Fees are modest, and there is a waiting list for the larger beds near the hedge."
+    },
+    {
+      "speaker": "Maya",
+      "text": "Gardeners who want to help with the compost bins can just turn up on Thursday evenings."
+    },
+    {
+      "speaker": "Owen",
+      "text": "Families are especially welcome, and the society has put up a small play corner by the gate."
+    },
+    {
+      "speaker": "Maya",
+      "text": "Honestly, the best part is the bench someone carved from an old apple tree."
+    },
+    {
+      "speaker": "Owen",
+      "text": "Hannah from the parish council says the next open day is in May."
+    },
+    {
+      "speaker": "Maya",
+      "text": "All the details will be posted on the noticeboard outside the library."
+    },
+    {
+      "speaker": "Owen",
+      "text": "Dates and times for the seed swap are still being confirmed, so keep an eye out."
+    },
+    {
+      "speaker": "Maya",
+      "text": "If you cannot make it on Saturday, the society says a few plots will stay open until Sunday."
+    },
+    {
+      "speaker": "Owen",
+      "text": "Cuttings and bulbs are also being given away free to anyone who asks."
+    },
+    {
+      "speaker": "Maya",
+      "text": "Nobody needs a big garden to take part, just a bit of patience."
+    },
+    {
+      "speaker": "Owen",
+      "text": "Officially the site has reopened after a long refurbishment of the water system."
+    },
+    {
+      "speaker": "Maya",
+      "text": "Careful pruning of the old raspberry canes is on the list for next week."
+    },
+    {
+      "speaker": "Owen",
+      "text": "Walking tours of the site are planned for later in the summer."
+    },
+    {
+      "speaker": "Maya",
+      "text": "Once the tours are confirmed, the society will post them online too."
+    },
+    {
+      "speaker": "Owen",
+      "text": "Winter squash, runner beans and a few stubborn leeks are already growing well."
+    },
+    {
+      "speaker": "Maya",
+      "text": "Whoever planted those leeks last autumn deserves a medal for patience."
+    },
+    {
+      "speaker": "Owen",
+      "text": "People keep saying the first sunny weekend always brings the best turnout."
+    },
+    {
+      "speaker": "Maya",
+      "text": "Children from the primary school planted sunflowers along the fence on Friday."
+    },
+    {
+      "speaker": "Owen",
+      "text": "Nearly every bed has a new label now, written by the kids in bright marker pens."
+    },
+    {
+      "speaker": "Maya",
+      "text": "Sadly the old scarecrow blew over in Tuesday's storm and needs rebuilding."
+    },
+    {
+      "speaker": "Owen",
+      "text": "The committee has already agreed to give it a new hat."
+    },
+    {
+      "speaker": "Maya",
+      "text": "Blackberry bushes along the eastern wall are finally getting trimmed back."
+    },
+    {
+      "speaker": "Owen",
+      "text": "Dozens of volunteers turned up with loppers and gloves for the job."
+    },
+    {
+      "speaker": "Maya",
+      "text": "Pretty much everyone agreed the morning ended with cake and a lot of mud."
+    },
+    {
+      "speaker": "Owen",
+      "text": "Let us hope the weather holds for the next few weeks."
+    },
+    {
+      "speaker": "Maya",
+      "text": "Odd as it sounds, the rain has been the biggest help so far."
+    },
+    {
+      "speaker": "Owen",
+      "text": "Soon the wildflower strip by the car park should be in full bloom."
+    },
+    {
+      "speaker": "Maya",
+      "text": "Plenty of bees have already moved in, which the society is thrilled about."
+    },
+    {
+      "speaker": "Owen",
+      "text": "Locals can find the full timetable on the society's website this week."
+    },
+    {
+      "speaker": "Maya",
+      "text": "Meanwhile the café by the station has promised to keep a pot of tea going all day."
+    },
+    {
+      "speaker": "Owen",
+      "text": "Good news for anyone who likes a slice of cake after digging."
+    },
+    {
+      "speaker": "Maya",
+      "text": "So that is the update from the allotments, and it sounds like a lovely start."
+    },
+    {
+      "speaker": "Owen",
+      "text": "Cheers to the volunteers who made it happen, and see you down there."
+    },
+    {
+      "speaker": "Maya",
+      "text": "Come along on Saturday and bring a pair of wellies."
+    }
+  ],
+  "outro": [
+    {
+      "speaker": "Owen",
+      "text": "Thanks for tuning in to the local news today."
+    },
+    {
+      "speaker": "Maya",
+      "text": "Enjoy the sunshine, and mind the mud on the paths."
+    }
+  ],
+  "repairs": 0,
+  "failures": [],
+  "usage": [
+    {
+      "input_tokens": 1132,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "cache_creation": {
+        "ephemeral_5m_input_tokens": 0,
+        "ephemeral_1h_input_tokens": 0
+      },
+      "output_tokens": 6425,
+      "output_tokens_details": {
+        "thinking_tokens": 4730
+      },
+      "service_tier": "standard",
+      "inference_geo": "global",
+      "speed": "standard"
+    }
+  ]
+}

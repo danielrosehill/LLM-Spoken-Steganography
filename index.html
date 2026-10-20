@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Spoken Steganography</title>
+<meta name="description" content="Two-phone demo: an LLM hides an encrypted message in the sentence openers of a mundane podcast, played aloud and decoded by a second phone.">
+<script type="importmap">
+{
+  "imports": {
+    "@noble/ciphers/": "https://esm.sh/@noble/ciphers@2.4.0/",
+    "@noble/hashes/": "https://esm.sh/@noble/hashes@2.4.0/",
+    "@anthropic-ai/sdk": "https://esm.sh/@anthropic-ai/sdk@0.135.0"
+  }
+}
+</script>
+<style>
+  :root { --bg:#f7f6f2; --fg:#1d1d1b; --muted:#6b6a65; --card:#fff; --line:#dedcd4; --accent:#2f5d8a; --ok:#2e7d4f; --bad:#a33a2c; --mark:#f3d98b; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#161615; --fg:#ecebe6; --muted:#9a998f; --card:#20201e; --line:#34332f; --accent:#7fb0e0; --ok:#6cc58f; --bad:#e58a7c; --mark:#6b5a1f; } }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.5 system-ui, sans-serif; }
+  main { max-width:760px; margin:0 auto; padding:16px; }
+  h1 { font-size:1.4rem; margin:.5rem 0 0; }
+  .sub { color:var(--muted); margin:.2rem 0 1rem; }
+  nav { display:flex; gap:6px; margin-bottom:12px; }
+  nav button { flex:1; }
+  button { font:inherit; padding:.6rem .9rem; border-radius:8px; border:1px solid var(--line); background:var(--card); color:var(--fg); cursor:pointer; }
+  button.primary { background:var(--accent); color:#fff; border-color:var(--accent); }
+  button[aria-selected="true"] { border-color:var(--accent); box-shadow: inset 0 -3px 0 var(--accent); }
+  button:disabled { opacity:.5; cursor:default; }
+  section { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px; margin-bottom:12px; }
+  label { display:block; font-size:.85rem; color:var(--muted); margin:.6rem 0 .2rem; }
+  input, textarea, select { width:100%; font:inherit; padding:.55rem; border-radius:8px; border:1px solid var(--line); background:var(--bg); color:var(--fg); }
+  textarea { min-height:6rem; }
+  .row { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+  .status { color:var(--muted); font-size:.9rem; min-height:1.4em; margin-top:8px; }
+  .script p { margin:.35rem 0; }
+  .script b { color:var(--muted); font-weight:600; }
+  .script .on { background:var(--mark); border-radius:3px; }
+  .script .speaking { outline:2px solid var(--accent); border-radius:4px; }
+  .result { font-size:1.4rem; font-weight:700; letter-spacing:.04em; }
+  .ok { color:var(--ok); } .bad { color:var(--bad); }
+  .mono { font-family:ui-monospace, monospace; font-size:.85rem; word-break:break-all; color:var(--muted); }
+  details summary { cursor:pointer; color:var(--muted); }
+  ol.openers { columns:2; font-size:.95rem; }
+  [hidden] { display:none !important; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Spoken steganography</h1>
+  <p class="sub">An encrypted message hidden in the sentence openers of a dull podcast, spoken by one phone and decoded by another. Background: <a href="https://myweirdprompts.com">My Weird Prompts</a> #6141, “Overheard at the Laundrette”.</p>
+
+  <nav role="tablist">
+    <button role="tab" data-tab="send" aria-selected="true">Send</button>
+    <button role="tab" data-tab="receive" aria-selected="false">Receive</button>
+    <button role="tab" data-tab="episode" aria-selected="false">The episode</button>
+  </nav>
+
+  <section>
+    <details id="settings">
+      <summary>Settings (shared key, API key, model)</summary>
+      <label for="pass">Shared passphrase: both phones must use the same one</label>
+      <input id="pass" autocomplete="off" placeholder="e.g. laundrette">
+      <label for="apikey">Anthropic API key: stays in this browser and is sent only to api.anthropic.com</label>
+      <input id="apikey" type="password" autocomplete="off" placeholder="sk-ant-…">
+      <label for="model">Model</label>
+      <select id="model">
+        <option value="claude-haiku-5-5">Claude Haiku 5.5 (cheapest)</option>
+        <option value="claude-sonnet-5-5">Claude Sonnet 5.5</option>
+      </select>
+    </details>
+  </section>
+
+  <div data-panel="send">
+    <section>
+      <label for="secret">Secret message (A–Z, spaces, . , ? ! '; digits are spelled out)</label>
+      <textarea id="secret" placeholder="Spare key under the blue pot"></textarea>
+      <label for="topic">Cover topic</label>
+      <input id="topic" value="a short local news update about the reopening of a community allotment garden">
+      <div class="status" id="capacity"></div>
+      <div class="row">
+        <button class="primary" id="generate">Write the episode</button>
+        <button id="play" disabled>▶ Play aloud</button>
+        <button id="stop" disabled>■ Stop</button>
+        <label style="margin:0;align-self:center"><input type="checkbox" id="reveal" style="width:auto"> show openers</label>
+      </div>
+      <div class="status" id="sendStatus"></div>
+    </section>
+    <section id="scriptBox" hidden><h2 id="scriptTitle" style="margin-top:0;font-size:1.1rem"></h2><div class="script" id="script"></div></section>
+  </div>
+
+  <div data-panel="receive" hidden>
+    <section>
+      <div class="row" style="margin-top:0">
+        <button class="primary" id="listen">🎙 Listen</button>
+        <button id="stopListen" disabled>■ Stop</button>
+        <button id="decode">Decode</button>
+        <button id="clear">Clear</button>
+      </div>
+      <label for="transcript">Transcript: filled live from the microphone, or paste one</label>
+      <textarea id="transcript" style="min-height:12rem"></textarea>
+      <div class="status" id="recvStatus"></div>
+    </section>
+    <section id="resultBox" hidden>
+      <div id="result" class="result"></div>
+      <details style="margin-top:8px"><summary>How it was read</summary><div id="diag" class="mono"></div></details>
+    </section>
+  </div>
+
+  <div data-panel="episode" hidden>
+    <section>
+      <p>The demo this repo grew out of. A seven-minute laundrette scene between Dorothy and Tim. It hides one sentence in the first letter of each of Dorothy's 23 lines, with no key. Listen first, then reveal.</p>
+      <audio controls preload="none" style="width:100%" src="https://episodes.myweirdprompts.com/audio/overheard-at-the-laundrette.m4a"></audio>
+      <div class="row"><button id="revealEpisode">Reveal Dorothy's openers</button></div>
+      <ol class="openers" id="openers"></ol>
+      <div class="result" id="episodeResult"></div>
+      <p class="sub">Herman, on air: “A serious version would add a key… Encrypt the content, then hide that it exists.” The Send and Receive tabs are that serious version.</p>
+    </section>
+  </div>
+</main>
+<script type="module" src="web/app.js"></script>
+</body>
+</html>
