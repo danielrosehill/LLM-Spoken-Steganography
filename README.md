@@ -10,6 +10,8 @@ secret ──► ChaCha20 + tag ──► opener letters ──► LLM writes ca
 🎙 ──► STT ──► sentence split (LLM only if no punctuation) ──► opener letters ──► decrypt + verify ──► secret
 ```
 
+**Live two-phone demo: [huggingface.co/spaces/danielrosehill/LLM-Spoken-Steganography](https://huggingface.co/spaces/danielrosehill/LLM-Spoken-Steganography)** (direct app URL for phones: <https://danielrosehill-llm-spoken-steganography.static.hf.space>)
+
 Neither model ever sees the plaintext. The writer sees only the ciphertext letters it has to start sentences with. The receiver's model, when it is needed at all, only restores sentence breaks in an unpunctuated transcript.
 
 ## Where this comes from: My Weird Prompts #6141
@@ -59,7 +61,7 @@ node cli/stegocast.mjs receive out/demo/carrier.txt -k "our passphrase"
 
 ### Two-phone demo
 
-`index.html` is a static page with **Send**, **Receive** and **The episode** tabs. Serve it over HTTPS, since microphone access needs a secure context. Vercel or any static host works, or `python3 -m http.server` for localhost. Then:
+`index.html` is a static page with **Send**, **Receive** and **The episode** tabs. It is deployed as a static Hugging Face Space (link above) by `scripts/deploy-space.sh`, which uploads only the files the page needs plus `space/README.md`, the Space card with its YAML header. Any HTTPS static host works, since microphone access needs a secure context, as does `python3 -m http.server` on localhost. Then:
 
 1. On both phones, open Settings and enter the same passphrase. The sending phone also needs an Anthropic API key, which is kept in that browser only.
 2. **Phone A → Send**: type the secret, choose a topic, press *Write the episode*, then *Play aloud* (the browser's own speech synthesis).
@@ -80,6 +82,7 @@ Phone B uses Chrome's built-in speech recognition, which sends audio to Google's
 | `index.html`, `web/app.js` | Two-phone browser demo (import map → esm.sh, no build step) |
 | `docs/method.md` | Full specification, design decisions, failure modes and what was tried |
 | `examples/spare-key/` | The verified run above |
+| `space/README.md`, `scripts/deploy-space.sh` | Hugging Face Space card and deploy script (`HF_TOKEN` with write scope) |
 | `episode/` | Audio and script of MWP #6141 |
 
 ## Limits (it is a proof of concept)
